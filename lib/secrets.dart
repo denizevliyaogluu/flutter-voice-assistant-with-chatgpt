@@ -1,1 +1,1 @@
-const openAIAPIKey = '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';
+const openAIAPIKey = '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';
