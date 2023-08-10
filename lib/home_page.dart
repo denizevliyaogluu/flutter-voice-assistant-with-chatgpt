@@ -104,75 +104,92 @@ class _HomePageState extends State<HomePage> {
             ),
 
             //chat bubble
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 40).copyWith(
-                top: 30,
-              ),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Pallete.borderColor,
+            Visibility(
+              visible: generatedImageUrl == null,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
                 ),
-                borderRadius: BorderRadius.circular(20).copyWith(
-                  topLeft: Radius.zero,
+                margin: const EdgeInsets.symmetric(horizontal: 40).copyWith(
+                  top: 30,
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Text(
-                  generatedContent == null
-                      ? 'What can I do for you?'
-                      : generatedContent!,
-                  style: TextStyle(
-                    fontFamily: 'Cera Pro',
-                    color: Pallete.mainFontColor,
-                    fontSize: generatedContent == null ? 25 : 18,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Pallete.borderColor,
+                  ),
+                  borderRadius: BorderRadius.circular(20).copyWith(
+                    topLeft: Radius.zero,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Text(
+                    generatedContent == null
+                        ? 'What can I do for you?'
+                        : generatedContent!,
+                    style: TextStyle(
+                      fontFamily: 'Cera Pro',
+                      color: Pallete.mainFontColor,
+                      fontSize: generatedContent == null ? 25 : 18,
+                    ),
                   ),
                 ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(
-                top: 10,
-                left: 22,
+            if (generatedImageUrl != null)
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(generatedImageUrl!),
+                ),
               ),
-              child: const Text(
-                'Here are a few features',
-                style: TextStyle(
-                  fontFamily: 'Cera Pro',
-                  color: Pallete.mainFontColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+            Visibility(
+              visible: generatedContent == null && generatedImageUrl == null,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.only(
+                  top: 10,
+                  left: 22,
+                ),
+                child: const Text(
+                  'Here are a few features',
+                  style: TextStyle(
+                    fontFamily: 'Cera Pro',
+                    color: Pallete.mainFontColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
-            //features list
-            Column(
-              children: const [
-                FeatureBox(
-                  color: Pallete.firstSuggestionBoxColor,
-                  headerText: 'ChatGPT',
-                  descriptionText:
-                      'A smarter way to stay organized and informed with ChatGPT',
-                ),
-                FeatureBox(
-                  color: Pallete.secondSuggestionBoxColor,
-                  headerText: 'Dall-E',
-                  descriptionText:
-                      'Get inspired and stay creative with your personal assitant powered by Dall-E',
-                ),
-                FeatureBox(
-                  color: Pallete.thirdSuggestionBoxColor,
-                  headerText: 'Smart Voice Assistant',
-                  descriptionText:
-                      'Get the best of both worlds with a voice assistant powered by Dall-E and ChatGPT',
-                ),
-              ],
+            Visibility(
+              visible: generatedContent == null && generatedImageUrl == null,
+              //features list
+              child: Column(
+                children: const [
+                  FeatureBox(
+                    color: Pallete.firstSuggestionBoxColor,
+                    headerText: 'ChatGPT',
+                    descriptionText:
+                        'A smarter way to stay organized and informed with ChatGPT',
+                  ),
+                  FeatureBox(
+                    color: Pallete.secondSuggestionBoxColor,
+                    headerText: 'Dall-E',
+                    descriptionText:
+                        'Get inspired and stay creative with your personal assitant powered by Dall-E',
+                  ),
+                  FeatureBox(
+                    color: Pallete.thirdSuggestionBoxColor,
+                    headerText: 'Smart Voice Assistant',
+                    descriptionText:
+                        'Get the best of both worlds with a voice assistant powered by Dall-E and ChatGPT',
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -199,7 +216,7 @@ class _HomePageState extends State<HomePage> {
             initSpeechToText();
           }
         },
-        child: const Icon(Icons.mic),
+        child: Icon(speechToText.isListening ? Icons.stop : Icons.mic),
       ),
     );
   }
